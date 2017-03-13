@@ -9,7 +9,7 @@ var Page = db.define('page', {
 		urlTitle: {
 			type: Sequelize.STRING, 
 			allowNull: false, 
-			validate: {isUrl: true},
+			// validate: {isUrl: true},
 		},
 		content: {
 			type: Sequelize.TEXT, 
@@ -28,22 +28,20 @@ var Page = db.define('page', {
 		hooks: {
 				beforeValidate: function makeUrl(page){
 				if (page.title){
-					page.urlTitle = "http://"+page.title.replace(/\s+/g, '_').replace(/\W/g, '')+".com";
-					console.log("!!!!!!!!!!!!!!"+page.urlTitle);
+					page.urlTitle = page.title.replace(/\s+/g, '_').replace(/\W/g, '');
+					console.log("OUR URL TITLE" +page.urlTitle);
 				}
 				else{
 					page.title = Math.random().toString(36).substring(2, 7);
 					page.urlTitle = page.title;
 				}
 				}
-		}
-	},
-	{
+		},
 		getterMethods: {
-		route: function() {
-			return '/wiki/' + this.urlTitle;
+			route: function() {
+				return '/wiki/' + this.urlTitle;
+				}
 			}
-		}
 	}
 );
 
@@ -58,6 +56,10 @@ var User = db.define('user', {
 		validate: {isEmail: true}
 	}
 });
+
+Page.belongsTo(User, { as: 'author' });
+// this makes a bunch of methods on the Page object that allows us to make associates 
+// between the page and the user
 
 module.exports = {
   Page: Page,

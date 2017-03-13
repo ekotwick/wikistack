@@ -17,9 +17,9 @@ app.engine('html', nunjucks.render);
 
 
 //synching to db
-models.User.sync({force: true})
+models.User.sync(/*{force: true}*/)
 .then(function () {
-    return models.Page.sync({force: true})
+    return models.Page.sync(/*{force: true}*/)
 })
 .then(function () {
     app.listen(3000, function () {
