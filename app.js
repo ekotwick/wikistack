@@ -21,7 +21,7 @@ models.User.sync({})
 })
 .then(function () {
     app.listen(3000, function () {
-        console.log('\nSERVER IS LISTENING IN 9000!\n');
+        console.log('\nSERVER IS LISTENING IN 3000!\n');
     });
 })
 .catch(console.error);
