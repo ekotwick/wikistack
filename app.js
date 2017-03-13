@@ -4,9 +4,11 @@ const app = express();
 const morgan = require('morgan');
 const nunjucks = require('nunjucks');
 const fs = require('fs');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const routes = require('./routes/routes');
 const models = require('./models');
+const wikiRouter = require('./routes/wiki');
+// ...
 
 //rendering 
 const env = nunjucks.configure('views', {noCache: true});
@@ -15,9 +17,9 @@ app.engine('html', nunjucks.render);
 
 
 //synching to db
-models.User.sync({})
+models.User.sync({force: true})
 .then(function () {
-    return models.Page.sync({})
+    return models.Page.sync({force: true})
 })
 .then(function () {
     app.listen(3000, function () {
@@ -29,4 +31,5 @@ models.User.sync({})
 app.use(express.static('public'));
 
 app.use('/', routes);
+app.use('/wiki', wikiRouter);
 
